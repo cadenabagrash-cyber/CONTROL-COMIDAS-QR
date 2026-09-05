@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Control de Comidas</title>
+
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    #reader {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px auto;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 14px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #resultado {
+      margin-top: 25px;
+    }
+
+    .valido {
+      border: 3px solid green;
+      background: #eaffea;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .usado {
+      border: 3px solid red;
+      background: #ffeaea;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .invalido {
+      border: 3px solid orange;
+      background: #fff4dd;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .dato {
+      font-size: 20px;
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🍽️ Control de Comidas</h1>
+
+  <button onclick="iniciarScanner()">
+    📷 ESCANEAR QR
+  </button>
+
+  <div id="reader"></div>
+
+  <div id="resultado"></div>
+
+  <script>
+
+    const URL_APPS_SCRIPT =
+      "https://script.google.com/macros/s/AKfycbwVrW_PImgFvdGNAw9s4b1q4OaLfZ0hqnRcQSPKynueWVzHk9z64YshRn_mZk9ln-abnA/exec";
+
+    let scanner = null;
+    let escaneando = false;
+    let procesando = false;
+
+
+    function iniciarScanner() {
+
+      if (escaneando) {
+        return;
+      }
+
+      document.getElementById("resultado").innerHTML =
+        "<h3>📷 Activando cámara...</h3>";
+
+      scanner = new Html5Qrcode("reader");
+
+      scanner.start(
+        { facingMode: "environment" },
+        {
+          fps: 10,
+          qrbox: {
+            width: 250,
+            height: 250
+          }
+        },
+        onScanSuccess,
+        function(error) {
+          // Los errores de lectura normales se ignoran.
+        }
+      )
+      .then(function() {
+
+        escaneando = true;
+
+        document.getElementById("resultado").innerHTML =
+          "<h3>📷 Apunta la cámara al QR</h3>";
+
+      })
+      .catch(function(error) {
+
+        document.getElementById("resultado").innerHTML =
+          "<div class='invalido'>" +
+          "<h2>❌ NO SE PUDO ACTIVAR LA CÁMARA</h2>" +
+          "<p>Verifica los permisos de cámara del navegador.</p>" +
+          "</div>";
+
+        console.log(error);
+
+      });
+    }
+
+
+    function onScanSuccess(codigo) {
+
+      if (procesando) {
+        return;
+      }
+
+      procesando = true;
+
+      detenerScanner();
+
+      document.getElementById("resultado").innerHTML =
+        "<h3>⏳ Validando QR...</h3>";
+
+      fetch(
+        URL_APPS_SCRIPT +
+        "?codigo=" +
+        encodeURIComponent(codigo)
+      )
+      .then(response => response.text())
+      .then(resultado => {
+
+        mostrarResultado(resultado);
+
+      })
+      .catch(error => {
+
+        document.getElementById("resultado").innerHTML =
+          "<div class='invalido'>" +
+          "<h2>❌ ERROR DE CONEXIÓN</h2>" +
+          "</div>";
+
+        procesando = false;
+      });
+    }
+
+
+    function detenerScanner() {
+
+      if (scanner && escaneando) {
+
+        scanner.stop()
+          .then(function() {
+
+            scanner.clear();
+            escaneando = false;
+
+          })
+          .catch(function(error) {
+
+            console.log(error);
+
+          });
+      }
+    }
+
+
+    function mostrarResultado(resultado) {
+
+      document.getElementById("resultado").innerHTML =
+        "<div class='invalido'>" +
+        "<h2>Respuesta recibida</h2>" +
+        "<p>" + resultado + "</p>" +
+        "</div>";
+
+      procesando = false;
+    }
+
+  </script>
+
+</body>
+</html>
