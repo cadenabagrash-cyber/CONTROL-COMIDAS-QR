@@ -506,6 +506,29 @@
 
     }
 
+else if (resultado.estado === "NO_VENDIDO") {
+
+  html =
+
+    "<div class='invalido'>" +
+
+    "<h1>🚫 QR NO VENDIDO</h1>" +
+
+    "<div class='dato'>" +
+    "<strong>Eslabón:</strong> " +
+    resultado.eslabon +
+    "</div>" +
+
+    "<div class='dato'>" +
+    "<strong>Tipo:</strong> " +
+    resultado.tipo +
+    "</div>" +
+
+    "<p>Este código todavía no ha sido vendido.</p>" +
+
+    "</div>";
+
+}
 
     else {
 
