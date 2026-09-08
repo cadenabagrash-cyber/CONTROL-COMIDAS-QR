@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <title>Control de Comidas</title>
 
   <script src="https://unpkg.com/html5-qrcode"></script>
 
   <style>
+
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -17,14 +24,25 @@
       background: #f5f5f5;
     }
 
-    h1 {
-      font-size: 28px;
+    .contenedor {
+      max-width: 600px;
+      margin: auto;
     }
 
-    #reader {
-      width: 100%;
-      max-width: 450px;
-      margin: 20px auto;
+    .logo {
+      width: 180px;
+      max-width: 70%;
+      margin: 10px auto 5px;
+      display: block;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 5px 0 20px;
+    }
+
+    h2 {
+      margin-top: 10px;
     }
 
     button {
@@ -36,175 +54,538 @@
       cursor: pointer;
     }
 
+    .boton-camara {
+      background: #222;
+      color: white;
+    }
+
+    .boton-manual {
+      background: #555;
+      color: white;
+    }
+
+    #reader {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px auto;
+    }
+
+    .seccion {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    input {
+      width: 90%;
+      max-width: 400px;
+      box-sizing: border-box;
+      font-size: 22px;
+      padding: 14px;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      text-align: center;
+    }
+
     #resultado {
       margin-top: 25px;
     }
 
     .valido {
-      border: 3px solid green;
+      border: 4px solid green;
       background: #eaffea;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
     }
 
     .usado {
-      border: 3px solid red;
+      border: 4px solid red;
       background: #ffeaea;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
     }
 
     .invalido {
-      border: 3px solid orange;
+      border: 4px solid orange;
       background: #fff4dd;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
     }
 
     .dato {
       font-size: 20px;
-      margin: 10px;
+      margin: 12px;
     }
+
+    .oculto {
+      display: none;
+    }
+
+    .separador {
+      margin: 25px 0;
+      border: 0;
+      border-top: 1px solid #ccc;
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
+<div class="contenedor">
+
+  <img
+    src="logo-comida.jpg"
+    class="logo"
+    alt="Control de Comidas"
+  >
+
   <h1>🍽️ Control de Comidas</h1>
 
-  <button onclick="iniciarScanner()">
-    📷 ESCANEAR QR
-  </button>
 
-  <div id="reader"></div>
+  <!-- ================================= -->
+  <!-- ESCÁNER -->
+  <!-- ================================= -->
+
+  <div class="seccion">
+
+    <h2>📷 Escanear QR</h2>
+
+    <button
+      class="boton-camara"
+      onclick="iniciarScanner()"
+    >
+      📷 ESCANEAR QR
+    </button>
+
+    <div id="reader"></div>
+
+  </div>
+
+
+  <!-- ================================= -->
+  <!-- VALIDACIÓN MANUAL -->
+  <!-- ================================= -->
+
+  <div class="seccion">
+
+    <h2>⌨️ Validación manual</h2>
+
+    <input
+      type="text"
+      id="codigoManual"
+      placeholder="Introduce el código"
+      autocomplete="off"
+    >
+
+    <br>
+
+    <button
+      class="boton-manual"
+      onclick="validarManual()"
+    >
+      VALIDAR CÓDIGO
+    </button>
+
+  </div>
+
+
+  <!-- ================================= -->
+  <!-- RESULTADO -->
+  <!-- ================================= -->
 
   <div id="resultado"></div>
 
-  <script>
-
-    const URL_APPS_SCRIPT =
-      "https://script.google.com/macros/s/AKfycbwVrW_PImgFvdGNAw9s4b1q4OaLfZ0hqnRcQSPKynueWVzHk9z64YshRn_mZk9ln-abnA/exec";
-
-    let scanner = null;
-    let escaneando = false;
-    let procesando = false;
+</div>
 
 
-    function iniciarScanner() {
+<script>
 
-      if (escaneando) {
-        return;
-      }
+  const URL_APPS_SCRIPT =
+    "https://script.google.com/macros/s/AKfycbwVrW_PImgFvdGNAw9s4b1q4OaLfZ0hqnRcQSPKynueWVzHk9z64YshRn_mZk9ln-abnA/exec";
 
-      document.getElementById("resultado").innerHTML =
-        "<h3>📷 Activando cámara...</h3>";
 
-      scanner = new Html5Qrcode("reader");
+  let scanner = null;
+  let escaneando = false;
+  let procesando = false;
 
-      scanner.start(
-        { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: {
-            width: 250,
-            height: 250
-          }
-        },
-        onScanSuccess,
-        function(error) {
-          // Los errores de lectura normales se ignoran.
+
+  // ==========================================
+  // ESCÁNER
+  // ==========================================
+
+  function iniciarScanner() {
+
+    if (escaneando || procesando) {
+      return;
+    }
+
+    document.getElementById("resultado").innerHTML =
+      "<h3>📷 Activando cámara...</h3>";
+
+    scanner = new Html5Qrcode("reader");
+
+    scanner.start(
+
+      { facingMode: "environment" },
+
+      {
+        fps: 10,
+        qrbox: {
+          width: 250,
+          height: 250
         }
-      )
-      .then(function() {
+      },
 
-        escaneando = true;
+      onScanSuccess,
 
-        document.getElementById("resultado").innerHTML =
-          "<h3>📷 Apunta la cámara al QR</h3>";
-
-      })
-      .catch(function(error) {
-
-        document.getElementById("resultado").innerHTML =
-          "<div class='invalido'>" +
-          "<h2>❌ NO SE PUDO ACTIVAR LA CÁMARA</h2>" +
-          "<p>Verifica los permisos de cámara del navegador.</p>" +
-          "</div>";
-
-        console.log(error);
-
-      });
-    }
-
-
-    function onScanSuccess(codigo) {
-
-      if (procesando) {
-        return;
+      function(error) {
+        // Errores normales de lectura se ignoran.
       }
 
-      procesando = true;
+    )
+    .then(function() {
 
-      detenerScanner();
+      escaneando = true;
 
       document.getElementById("resultado").innerHTML =
-        "<h3>⏳ Validando QR...</h3>";
+        "<h3>📷 Apunta la cámara al QR</h3>";
 
-      fetch(
-        URL_APPS_SCRIPT +
-        "?codigo=" +
-        encodeURIComponent(codigo)
-      )
-      .then(response => response.text())
-      .then(resultado => {
-
-        mostrarResultado(resultado);
-
-      })
-      .catch(error => {
-
-        document.getElementById("resultado").innerHTML =
-          "<div class='invalido'>" +
-          "<h2>❌ ERROR DE CONEXIÓN</h2>" +
-          "</div>";
-
-        procesando = false;
-      });
-    }
-
-
-    function detenerScanner() {
-
-      if (scanner && escaneando) {
-
-        scanner.stop()
-          .then(function() {
-
-            scanner.clear();
-            escaneando = false;
-
-          })
-          .catch(function(error) {
-
-            console.log(error);
-
-          });
-      }
-    }
-
-
-    function mostrarResultado(resultado) {
+    })
+    .catch(function(error) {
 
       document.getElementById("resultado").innerHTML =
         "<div class='invalido'>" +
-        "<h2>Respuesta recibida</h2>" +
-        "<p>" + resultado + "</p>" +
+        "<h2>❌ NO SE PUDO ACTIVAR LA CÁMARA</h2>" +
+        "<p>Verifica los permisos de cámara.</p>" +
+        "</div>";
+
+      console.log(error);
+
+    });
+
+  }
+
+
+  // ==========================================
+  // QR DETECTADO
+  // ==========================================
+
+  function onScanSuccess(codigo) {
+
+    if (procesando) {
+      return;
+    }
+
+    procesando = true;
+
+    detenerScanner();
+
+    document.getElementById("resultado").innerHTML =
+      "<h3>⏳ Validando QR...</h3>";
+
+    validarConAppsScript(codigo);
+
+  }
+
+
+  // ==========================================
+  // VALIDACIÓN MANUAL
+  // ==========================================
+
+  function validarManual() {
+
+    if (procesando) {
+      return;
+    }
+
+    const codigo =
+      document
+        .getElementById("codigoManual")
+        .value
+        .trim();
+
+    if (!codigo) {
+
+      document.getElementById("resultado").innerHTML =
+        "<div class='invalido'>" +
+        "<h2>⚠️ INTRODUCE UN CÓDIGO</h2>" +
+        "</div>";
+
+      return;
+    }
+
+    procesando = true;
+
+    document.getElementById("resultado").innerHTML =
+      "<h3>⏳ Validando código...</h3>";
+
+    validarConAppsScript(codigo);
+
+  }
+
+
+  // ==========================================
+  // CONEXIÓN CON APPS SCRIPT
+  // JSONP
+  // ==========================================
+
+  function validarConAppsScript(codigo) {
+
+    const callbackName =
+      "resultadoQR_" + Date.now();
+
+    let terminado = false;
+
+    window[callbackName] = function(resultado) {
+
+      if (terminado) {
+        return;
+      }
+
+      terminado = true;
+
+      mostrarResultado(resultado);
+
+      limpiarCallback();
+
+    };
+
+
+    function limpiarCallback() {
+
+      delete window[callbackName];
+
+      if (script && script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+
+    }
+
+
+    const script =
+      document.createElement("script");
+
+
+    script.src =
+      URL_APPS_SCRIPT +
+      "?codigo=" +
+      encodeURIComponent(codigo) +
+      "&callback=" +
+      callbackName +
+      "&t=" +
+      Date.now();
+
+
+    script.onerror = function() {
+
+      if (terminado) {
+        return;
+      }
+
+      terminado = true;
+
+      document.getElementById("resultado").innerHTML =
+        "<div class='invalido'>" +
+        "<h2>❌ ERROR DE CONEXIÓN</h2>" +
+        "<p>No se pudo comunicar con el sistema.</p>" +
         "</div>";
 
       procesando = false;
+
+      limpiarCallback();
+
+    };
+
+
+    document.body.appendChild(script);
+
+
+    // Protección contra solicitudes que no respondan
+
+    setTimeout(function() {
+
+      if (terminado) {
+        return;
+      }
+
+      terminado = true;
+
+      document.getElementById("resultado").innerHTML =
+        "<div class='invalido'>" +
+        "<h2>❌ TIEMPO DE ESPERA AGOTADO</h2>" +
+        "<p>Intenta nuevamente.</p>" +
+        "</div>";
+
+      procesando = false;
+
+      limpiarCallback();
+
+    }, 10000);
+
+  }
+
+
+  // ==========================================
+  // MOSTRAR RESULTADO
+  // ==========================================
+
+  function mostrarResultado(resultado) {
+
+    let html = "";
+
+
+    if (resultado.estado === "VALIDO") {
+
+      html =
+
+        "<div class='valido'>" +
+
+        "<h1>✅ COMIDA VÁLIDA</h1>" +
+
+        "<div class='dato'>" +
+        "<strong>Eslabón:</strong> " +
+        resultado.eslabon +
+        "</div>" +
+
+        "<div class='dato'>" +
+        "<strong>Tipo:</strong> " +
+        resultado.tipo +
+        "</div>" +
+
+        "<div class='dato'>" +
+        "<strong>Canjeado:</strong> " +
+        resultado.fecha +
+        "</div>" +
+
+        "</div>";
+
     }
 
-  </script>
+
+    else if (resultado.estado === "USADO") {
+
+      html =
+
+        "<div class='usado'>" +
+
+        "<h1>❌ QR YA UTILIZADO</h1>" +
+
+        "<div class='dato'>" +
+        "<strong>Eslabón:</strong> " +
+        resultado.eslabon +
+        "</div>" +
+
+        "<div class='dato'>" +
+        "<strong>Tipo:</strong> " +
+        resultado.tipo +
+        "</div>" +
+
+        "<div class='dato'>" +
+        "<strong>Canjeado:</strong> " +
+        resultado.fecha +
+        "</div>" +
+
+        "</div>";
+
+    }
+
+
+    else if (resultado.estado === "NO_VALIDO") {
+
+      html =
+
+        "<div class='invalido'>" +
+
+        "<h1>❌ QR NO VÁLIDO</h1>" +
+
+        "</div>";
+
+    }
+
+
+    else {
+
+      html =
+
+        "<div class='invalido'>" +
+
+        "<h1>❌ QR NO DISPONIBLE</h1>" +
+
+        "</div>";
+
+    }
+
+
+    document.getElementById("resultado").innerHTML =
+      html;
+
+
+    document.getElementById("codigoManual").value = "";
+
+
+    procesando = false;
+
+
+    // Botón para continuar
+
+    const boton = document.createElement("button");
+
+    boton.className = "boton-camara";
+
+    boton.innerHTML = "📷 ESCANEAR SIGUIENTE";
+
+    boton.onclick = function() {
+
+      document.getElementById("resultado").innerHTML = "";
+
+      iniciarScanner();
+
+    };
+
+    document
+      .getElementById("resultado")
+      .appendChild(boton);
+
+  }
+
+
+  // ==========================================
+  // DETENER CÁMARA
+  // ==========================================
+
+  function detenerScanner() {
+
+    if (scanner && escaneando) {
+
+      scanner.stop()
+
+        .then(function() {
+
+          scanner.clear();
+
+          escaneando = false;
+
+        })
+
+        .catch(function(error) {
+
+          console.log(error);
+
+          escaneando = false;
+
+        });
+
+    }
+
+  }
+
+
+</script>
 
 </body>
+
 </html>
