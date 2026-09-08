@@ -445,7 +445,10 @@
         "<div class='valido'>" +
 
         "<h1>✅ COMIDA VÁLIDA</h1>" +
-
+        "<div class='dato'>" +
+"<strong>ID:</strong> " +
+String(resultado.id).padStart(3, "0") +
+"</div>" +
         "<div class='dato'>" +
         "<strong>Eslabón:</strong> " +
         resultado.eslabon +
@@ -473,7 +476,10 @@
         "<div class='usado'>" +
 
         "<h1>❌ QR YA UTILIZADO</h1>" +
-
+        "<div class='dato'>" +
+"<strong>ID:</strong> " +
+String(resultado.id).padStart(3, "0") +
+"</div>" +
         "<div class='dato'>" +
         "<strong>Eslabón:</strong> " +
         resultado.eslabon +
@@ -513,7 +519,10 @@ else if (resultado.estado === "NO_VENDIDO") {
     "<div class='invalido'>" +
 
     "<h1>🚫 QR NO VENDIDO</h1>" +
-
+    "<div class='dato'>" +
+"<strong>ID:</strong> " +
+String(resultado.id).padStart(3, "0") +
+"</div>" +
     "<div class='dato'>" +
     "<strong>Eslabón:</strong> " +
     resultado.eslabon +
