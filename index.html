@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -7,11 +6,8 @@
   <meta charset="UTF-8">
 
   <meta
-
     name="viewport"
-
     content="width=device-width, initial-scale=1"
-
   >
 
   <title>Control de Comidas</title>
@@ -19,171 +15,139 @@
   <script src="https://unpkg.com/html5-qrcode"></script>
 
   <style>
-    * { box-sizing: border-box; }
 
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
-      padding: 240px 16px 76px;
-      min-height: 100vh;
-      color: #111827;
-      background-color: #fff;
-      background-image: url("Fondo-BAGRASH.png");
-      background-repeat: no-repeat;
-      background-position: center top;
-      background-size: 100% 100%;
-      position: relative;
+      padding: 20px;
+      background: #f5f5f5;
     }
 
     .contenedor {
-      width: 100%;
       max-width: 600px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
+      margin: auto;
     }
 
     .logo {
       width: 180px;
-      max-width: 62%;
-      height: auto;
-      margin: 0 auto 14px;
+      max-width: 70%;
+      margin: 10px auto 5px;
       display: block;
     }
 
     h1 {
-      font-size: clamp(1.55rem, 4vw, 2rem);
-      line-height: 1.2;
-      margin: 10px 0 22px;
-      overflow-wrap: anywhere;
+      font-size: 28px;
+      margin: 5px 0 20px;
     }
 
-    .seccion {
-      background: rgba(255,255,255,.90);
-      border: 1px solid rgba(11,52,120,.14);
-      border-radius: 16px;
-      padding: 20px 18px;
-      margin: 18px auto;
-      box-shadow: 0 4px 16px rgba(11,52,120,.10);
-      width: 100%;
-    }
-
-    .seccion h2 {
-      font-size: clamp(1.25rem, 3.8vw, 1.65rem);
-      line-height: 1.25;
-      margin: 0 0 18px;
+    h2 {
+      margin-top: 10px;
     }
 
     button {
-      max-width: 100%;
-      min-height: 42px;
-      padding: 10px 18px;
-      border: 0;
-      border-radius: 9px;
-      background: #0b3478;
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 20px;
+      padding: 14px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,.15);
     }
 
-    button:active { transform: translateY(1px); }
+    .boton-camara {
+      background: #222;
+      color: white;
+    }
 
-    input[type="text"] {
-      display: block;
-      width: 100%;
-      max-width: 340px;
-      min-height: 42px;
-      margin: 0 auto 10px;
-      padding: 10px 12px;
-      border: 1px solid #b8c2d1;
-      border-radius: 8px;
-      font-size: 1rem;
-      background: #fff;
+    .boton-manual {
+      background: #555;
+      color: white;
     }
 
     #reader {
       width: 100%;
-      max-width: 360px;
-      margin: 16px auto 0;
-      overflow: hidden;
+      max-width: 450px;
+      margin: 20px auto;
+    }
+
+    .seccion {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    input {
+      width: 90%;
+      max-width: 400px;
+      box-sizing: border-box;
+      font-size: 22px;
+      padding: 14px;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      text-align: center;
     }
 
     #resultado {
-      width: 100%;
-      min-height: 64px;
-      margin: 18px auto 0;
-      overflow-wrap: anywhere;
+      margin-top: 25px;
     }
 
-    #resultado > div {
-      background: rgba(255,255,255,.95);
+    .valido {
+      border: 4px solid green;
+      background: #eaffea;
+      padding: 20px;
       border-radius: 12px;
-      padding: 16px;
-      margin: 12px auto;
-      box-shadow: 0 3px 12px rgba(0,0,0,.12);
     }
 
-    .valido { border: 2px solid #16803c; color: #14532d; }
-    .usado { border: 2px solid #d97706; color: #92400e; }
-    .invalido { border: 2px solid #dc2626; color: #991b1b; }
-    .dato { margin: 8px 0; overflow-wrap: anywhere; }
-
-    .firma {
-      position: fixed;
-      left: 14px;
-      bottom: 10px;
-      z-index: 20;
-      font-size: 12px;
-      font-style: italic;
-      font-weight: 700;
-      letter-spacing: .2px;
-      color: #fff;
-      background: #0b3478;
-      border-left: 4px solid #e21b2d;
-      padding: 6px 10px;
-      border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.22);
-      pointer-events: none;
+    .usado {
+      border: 4px solid red;
+      background: #ffeaea;
+      padding: 20px;
+      border-radius: 12px;
     }
 
-    @media (max-width: 600px) {
-      body {
-        padding: 195px 12px 64px;
-        background-attachment: scroll;
-      }
-      .contenedor { max-width: 100%; }
-      .logo { width: 150px; margin-bottom: 12px; }
-      .seccion { padding: 18px 14px; margin: 14px auto; }
-      .firma { left: 8px; bottom: 6px; }
-      #reader { max-width: 100%; }
+    .invalido {
+      border: 4px solid orange;
+      background: #fff4dd;
+      padding: 20px;
+      border-radius: 12px;
     }
+
+    .dato {
+      font-size: 20px;
+      margin: 12px;
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    .separador {
+      margin: 25px 0;
+      border: 0;
+      border-top: 1px solid #ccc;
+    }
+
   </style>
 
 </head>
+
 
 <body>
 
 <div class="contenedor">
 
   <img
-
     src="Logo-Comida.JPG?v=2"
-
     class="logo"
-
     alt="Control de Comidas"
-
   >
 
   <h1>🍽️ Control de Comidas</h1>
 
+
   <!-- ================================= -->
-
   <!-- ESCÁNER -->
-
   <!-- ================================= -->
 
   <div class="seccion">
@@ -191,25 +155,19 @@
     <h2>📷 Escanear QR</h2>
 
     <button
-
       class="boton-camara"
-
       onclick="iniciarScanner()"
-
     >
-
       📷 ESCANEAR QR
-
     </button>
 
     <div id="reader"></div>
 
   </div>
 
+
   <!-- ================================= -->
-
   <!-- VALIDACIÓN MANUAL -->
-
   <!-- ================================= -->
 
   <div class="seccion">
@@ -217,73 +175,55 @@
     <h2>⌨️ Validación manual</h2>
 
     <input
-
       type="text"
-
       id="codigoManual"
-
       placeholder="Introduce el código"
-
       autocomplete="off"
-
     >
 
     <br>
 
     <button
-
       class="boton-manual"
-
       onclick="validarManual()"
-
     >
-
       VALIDAR CÓDIGO
-
     </button>
 
   </div>
 
-  <!-- ================================= -->
 
+  <!-- ================================= -->
   <!-- RESULTADO -->
-
   <!-- ================================= -->
 
-  <div id="resultado" aria-live="polite"></div>
-
-<footer class="firma">by Andy Reyes</footer>
+  <div id="resultado"></div>
 
 </div>
+
 
 <script>
 
   const URL_APPS_SCRIPT =
-
     "https://script.google.com/macros/s/AKfycbwc0hQcj-QVQK11r_ii4dz28b3UzJH3ZTsmuwsqTV4-B5JVq--HK0EhHUzpcN2aOmag/exec";
 
+
   let scanner = null;
-
   let escaneando = false;
-
   let procesando = false;
 
+
   // ==========================================
-
   // ESCÁNER
-
   // ==========================================
 
   function iniciarScanner() {
 
     if (escaneando || procesando) {
-
       return;
-
     }
 
     document.getElementById("resultado").innerHTML =
-
       "<h3>📷 Activando cámara...</h3>";
 
     scanner = new Html5Qrcode("reader");
@@ -293,49 +233,34 @@
       { facingMode: "environment" },
 
       {
-
         fps: 10,
-
         qrbox: {
-
           width: 250,
-
           height: 250
-
         }
-
       },
 
       onScanSuccess,
 
       function(error) {
-
         // Errores normales de lectura se ignoran.
-
       }
 
     )
-
     .then(function() {
 
       escaneando = true;
 
       document.getElementById("resultado").innerHTML =
-
         "<h3>📷 Apunta la cámara al QR</h3>";
 
     })
-
     .catch(function(error) {
 
       document.getElementById("resultado").innerHTML =
-
         "<div class='invalido'>" +
-
         "<h2>❌ NO SE PUDO ACTIVAR LA CÁMARA</h2>" +
-
         "<p>Verifica los permisos de cámara.</p>" +
-
         "</div>";
 
       console.log(error);
@@ -344,18 +269,15 @@
 
   }
 
+
   // ==========================================
-
   // QR DETECTADO
-
   // ==========================================
 
   function onScanSuccess(codigo) {
 
     if (procesando) {
-
       return;
-
     }
 
     procesando = true;
@@ -363,73 +285,57 @@
     detenerScanner();
 
     document.getElementById("resultado").innerHTML =
-
       "<h3>⏳ Validando QR...</h3>";
 
     validarConAppsScript(codigo);
 
   }
 
+
   // ==========================================
-
   // VALIDACIÓN MANUAL
-
   // ==========================================
 
   function validarManual() {
 
     if (procesando) {
-
       return;
-
     }
 
     const codigo =
-
       document
-
         .getElementById("codigoManual")
-
         .value
-
         .trim();
 
     if (!codigo) {
 
       document.getElementById("resultado").innerHTML =
-
         "<div class='invalido'>" +
-
         "<h2>⚠️ INTRODUCE UN CÓDIGO</h2>" +
-
         "</div>";
 
       return;
-
     }
 
     procesando = true;
 
     document.getElementById("resultado").innerHTML =
-
       "<h3>⏳ Validando código...</h3>";
 
     validarConAppsScript(codigo);
 
   }
 
+
   // ==========================================
-
   // CONEXIÓN CON APPS SCRIPT
-
   // JSONP
-
   // ==========================================
 
   function validarConAppsScript(codigo) {
 
     const callbackName =
-
       "resultadoQR_" + Date.now();
 
     let terminado = false;
@@ -437,9 +343,7 @@
     window[callbackName] = function(resultado) {
 
       if (terminado) {
-
         return;
-
       }
 
       terminado = true;
@@ -450,56 +354,44 @@
 
     };
 
+
     function limpiarCallback() {
 
       delete window[callbackName];
 
       if (script && script.parentNode) {
-
         script.parentNode.removeChild(script);
-
       }
 
     }
 
-    const script =
 
+    const script =
       document.createElement("script");
 
+
     script.src =
-
       URL_APPS_SCRIPT +
-
       "?codigo=" +
-
       encodeURIComponent(codigo) +
-
       "&callback=" +
-
       callbackName +
-
       "&t=" +
-
       Date.now();
+
 
     script.onerror = function() {
 
       if (terminado) {
-
         return;
-
       }
 
       terminado = true;
 
       document.getElementById("resultado").innerHTML =
-
         "<div class='invalido'>" +
-
         "<h2>❌ ERROR DE CONEXIÓN</h2>" +
-
         "<p>No se pudo comunicar con el sistema.</p>" +
-
         "</div>";
 
       procesando = false;
@@ -508,28 +400,24 @@
 
     };
 
+
     document.body.appendChild(script);
+
 
     // Protección contra solicitudes que no respondan
 
     setTimeout(function() {
 
       if (terminado) {
-
         return;
-
       }
 
       terminado = true;
 
       document.getElementById("resultado").innerHTML =
-
         "<div class='invalido'>" +
-
         "<h2>❌ TIEMPO DE ESPERA AGOTADO</h2>" +
-
         "<p>Intenta nuevamente.</p>" +
-
         "</div>";
 
       procesando = false;
@@ -540,15 +428,15 @@
 
   }
 
+
   // ==========================================
-
   // MOSTRAR RESULTADO
-
   // ==========================================
 
   function mostrarResultado(resultado) {
 
     let html = "";
+
 
     if (resultado.estado === "VALIDO") {
 
@@ -557,42 +445,29 @@
         "<div class='valido'>" +
 
         "<h1>✅ COMIDA VÁLIDA</h1>" +
-
         "<div class='dato'>" +
-
 "<strong>ID:</strong> " +
-
 String(resultado.id).padStart(3, "0") +
-
 "</div>" +
-
         "<div class='dato'>" +
-
         "<strong>Eslabón:</strong> " +
-
         resultado.eslabon +
-
         "</div>" +
 
         "<div class='dato'>" +
-
         "<strong>Tipo:</strong> " +
-
         resultado.tipo +
-
         "</div>" +
 
         "<div class='dato'>" +
-
         "<strong>Canjeado:</strong> " +
-
         resultado.fecha +
-
         "</div>" +
 
         "</div>";
 
     }
+
 
     else if (resultado.estado === "USADO") {
 
@@ -601,42 +476,29 @@ String(resultado.id).padStart(3, "0") +
         "<div class='usado'>" +
 
         "<h1>❌ QR YA UTILIZADO</h1>" +
-
         "<div class='dato'>" +
-
 "<strong>ID:</strong> " +
-
 String(resultado.id).padStart(3, "0") +
-
 "</div>" +
-
         "<div class='dato'>" +
-
         "<strong>Eslabón:</strong> " +
-
         resultado.eslabon +
-
         "</div>" +
 
         "<div class='dato'>" +
-
         "<strong>Tipo:</strong> " +
-
         resultado.tipo +
-
         "</div>" +
 
         "<div class='dato'>" +
-
         "<strong>Canjeado:</strong> " +
-
         resultado.fecha +
-
         "</div>" +
 
         "</div>";
 
     }
+
 
     else if (resultado.estado === "NO_VALIDO") {
 
@@ -657,29 +519,18 @@ else if (resultado.estado === "NO_VENDIDO") {
     "<div class='invalido'>" +
 
     "<h1>🚫 QR NO VENDIDO</h1>" +
-
     "<div class='dato'>" +
-
 "<strong>ID:</strong> " +
-
 String(resultado.id).padStart(3, "0") +
-
 "</div>" +
-
     "<div class='dato'>" +
-
     "<strong>Eslabón:</strong> " +
-
     resultado.eslabon +
-
     "</div>" +
 
     "<div class='dato'>" +
-
     "<strong>Tipo:</strong> " +
-
     resultado.tipo +
-
     "</div>" +
 
     "<p>Este código todavía no ha sido vendido.</p>" +
@@ -700,13 +551,16 @@ String(resultado.id).padStart(3, "0") +
 
     }
 
-    document.getElementById("resultado").innerHTML =
 
+    document.getElementById("resultado").innerHTML =
       html;
+
 
     document.getElementById("codigoManual").value = "";
 
+
     procesando = false;
+
 
     // Botón para continuar
 
@@ -725,17 +579,14 @@ String(resultado.id).padStart(3, "0") +
     };
 
     document
-
       .getElementById("resultado")
-
       .appendChild(boton);
 
   }
 
+
   // ==========================================
-
   // DETENER CÁMARA
-
   // ==========================================
 
   function detenerScanner() {
@@ -763,6 +614,7 @@ String(resultado.id).padStart(3, "0") +
     }
 
   }
+
 
 </script>
 
