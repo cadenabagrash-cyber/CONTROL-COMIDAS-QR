@@ -1,16 +1,10 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 
 <html lang="es">
 
-
-
 <head>
 
-
-
   <meta charset="UTF-8">
-
-
 
   <meta
 
@@ -20,15 +14,9 @@
 
   >
 
-
-
   <title>Control de Comidas</title>
 
-
-
   <script src="https://unpkg.com/html5-qrcode"></script>
-
-
 
   <style>
     * { box-sizing: border-box; }
@@ -174,22 +162,11 @@
     }
   </style>
 
-
-
 </head>
-
-
-
-
 
 <body>
 
-
-
 <div class="contenedor">
-
-  
-
 
   <img
 
@@ -201,13 +178,7 @@
 
   >
 
-
-
   <h1>🍽️ Control de Comidas</h1>
-
-
-
-
 
   <!-- ================================= -->
 
@@ -215,15 +186,9 @@
 
   <!-- ================================= -->
 
-
-
   <div class="seccion">
 
-
-
     <h2>📷 Escanear QR</h2>
-
-
 
     <button
 
@@ -237,17 +202,9 @@
 
     </button>
 
-
-
     <div id="reader"></div>
 
-
-
   </div>
-
-
-
-
 
   <!-- ================================= -->
 
@@ -255,15 +212,9 @@
 
   <!-- ================================= -->
 
-
-
   <div class="seccion">
 
-
-
     <h2>⌨️ Validación manual</h2>
-
-
 
     <input
 
@@ -277,11 +228,7 @@
 
     >
 
-
-
     <br>
-
-
 
     <button
 
@@ -295,13 +242,7 @@
 
     </button>
 
-
-
   </div>
-
-
-
-
 
   <!-- ================================= -->
 
@@ -309,31 +250,17 @@
 
   <!-- ================================= -->
 
-
-
   <div id="resultado" aria-live="polite"></div>
 
 <footer class="firma">by Andy Reyes</footer>
 
-
-
 </div>
 
-
-
-
-
 <script>
-
-
 
   const URL_APPS_SCRIPT =
 
     "https://script.google.com/macros/s/AKfycbwc0hQcj-QVQK11r_ii4dz28b3UzJH3ZTsmuwsqTV4-B5JVq--HK0EhHUzpcN2aOmag/exec";
-
-
-
-
 
   let scanner = null;
 
@@ -341,21 +268,13 @@
 
   let procesando = false;
 
-
-
-
-
   // ==========================================
 
   // ESCÁNER
 
   // ==========================================
 
-
-
   function iniciarScanner() {
-
-
 
     if (escaneando || procesando) {
 
@@ -363,25 +282,15 @@
 
     }
 
-
-
     document.getElementById("resultado").innerHTML =
 
       "<h3>📷 Activando cámara...</h3>";
 
-
-
     scanner = new Html5Qrcode("reader");
-
-
 
     scanner.start(
 
-
-
       { facingMode: "environment" },
-
-
 
       {
 
@@ -397,11 +306,7 @@
 
       },
 
-
-
       onScanSuccess,
-
-
 
       function(error) {
 
@@ -409,29 +314,19 @@
 
       }
 
-
-
     )
 
     .then(function() {
 
-
-
       escaneando = true;
-
-
 
       document.getElementById("resultado").innerHTML =
 
         "<h3>📷 Apunta la cámara al QR</h3>";
 
-
-
     })
 
     .catch(function(error) {
-
-
 
       document.getElementById("resultado").innerHTML =
 
@@ -443,21 +338,11 @@
 
         "</div>";
 
-
-
       console.log(error);
-
-
 
     });
 
-
-
   }
-
-
-
-
 
   // ==========================================
 
@@ -465,11 +350,7 @@
 
   // ==========================================
 
-
-
   function onScanSuccess(codigo) {
-
-
 
     if (procesando) {
 
@@ -477,31 +358,17 @@
 
     }
 
-
-
     procesando = true;
 
-
-
     detenerScanner();
-
-
 
     document.getElementById("resultado").innerHTML =
 
       "<h3>⏳ Validando QR...</h3>";
 
-
-
     validarConAppsScript(codigo);
 
-
-
   }
-
-
-
-
 
   // ==========================================
 
@@ -509,19 +376,13 @@
 
   // ==========================================
 
-
-
   function validarManual() {
-
-
 
     if (procesando) {
 
       return;
 
     }
-
-
 
     const codigo =
 
@@ -533,11 +394,7 @@
 
         .trim();
 
-
-
     if (!codigo) {
-
-
 
       document.getElementById("resultado").innerHTML =
 
@@ -547,33 +404,19 @@
 
         "</div>";
 
-
-
       return;
 
     }
 
-
-
     procesando = true;
-
-
 
     document.getElementById("resultado").innerHTML =
 
       "<h3>⏳ Validando código...</h3>";
 
-
-
     validarConAppsScript(codigo);
 
-
-
   }
-
-
-
-
 
   // ==========================================
 
@@ -583,25 +426,15 @@
 
   // ==========================================
 
-
-
   function validarConAppsScript(codigo) {
-
-
 
     const callbackName =
 
       "resultadoQR_" + Date.now();
 
-
-
     let terminado = false;
 
-
-
     window[callbackName] = function(resultado) {
-
-
 
       if (terminado) {
 
@@ -609,33 +442,17 @@
 
       }
 
-
-
       terminado = true;
-
-
 
       mostrarResultado(resultado);
 
-
-
       limpiarCallback();
-
-
 
     };
 
-
-
-
-
     function limpiarCallback() {
 
-
-
       delete window[callbackName];
-
-
 
       if (script && script.parentNode) {
 
@@ -643,21 +460,11 @@
 
       }
 
-
-
     }
-
-
-
-
 
     const script =
 
       document.createElement("script");
-
-
-
-
 
     script.src =
 
@@ -675,13 +482,7 @@
 
       Date.now();
 
-
-
-
-
     script.onerror = function() {
-
-
 
       if (terminado) {
 
@@ -689,11 +490,7 @@
 
       }
 
-
-
       terminado = true;
-
-
 
       document.getElementById("resultado").innerHTML =
 
@@ -705,35 +502,17 @@
 
         "</div>";
 
-
-
       procesando = false;
-
-
 
       limpiarCallback();
 
-
-
     };
-
-
-
-
 
     document.body.appendChild(script);
 
-
-
-
-
     // Protección contra solicitudes que no respondan
 
-
-
     setTimeout(function() {
-
-
 
       if (terminado) {
 
@@ -741,11 +520,7 @@
 
       }
 
-
-
       terminado = true;
-
-
 
       document.getElementById("resultado").innerHTML =
 
@@ -757,25 +532,13 @@
 
         "</div>";
 
-
-
       procesando = false;
-
-
 
       limpiarCallback();
 
-
-
     }, 10000);
 
-
-
   }
-
-
-
-
 
   // ==========================================
 
@@ -783,29 +546,15 @@
 
   // ==========================================
 
-
-
   function mostrarResultado(resultado) {
-
-
 
     let html = "";
 
-
-
-
-
     if (resultado.estado === "VALIDO") {
-
-
 
       html =
 
-
-
         "<div class='valido'>" +
-
-
 
         "<h1>✅ COMIDA VÁLIDA</h1>" +
 
@@ -825,8 +574,6 @@ String(resultado.id).padStart(3, "0") +
 
         "</div>" +
 
-
-
         "<div class='dato'>" +
 
         "<strong>Tipo:</strong> " +
@@ -834,8 +581,6 @@ String(resultado.id).padStart(3, "0") +
         resultado.tipo +
 
         "</div>" +
-
-
 
         "<div class='dato'>" +
 
@@ -845,29 +590,15 @@ String(resultado.id).padStart(3, "0") +
 
         "</div>" +
 
-
-
         "</div>";
-
-
 
     }
 
-
-
-
-
     else if (resultado.estado === "USADO") {
-
-
 
       html =
 
-
-
         "<div class='usado'>" +
-
-
 
         "<h1>❌ QR YA UTILIZADO</h1>" +
 
@@ -887,8 +618,6 @@ String(resultado.id).padStart(3, "0") +
 
         "</div>" +
 
-
-
         "<div class='dato'>" +
 
         "<strong>Tipo:</strong> " +
@@ -896,8 +625,6 @@ String(resultado.id).padStart(3, "0") +
         resultado.tipo +
 
         "</div>" +
-
-
 
         "<div class='dato'>" +
 
@@ -907,53 +634,27 @@ String(resultado.id).padStart(3, "0") +
 
         "</div>" +
 
-
-
         "</div>";
 
-
-
     }
-
-
-
-
 
     else if (resultado.estado === "NO_VALIDO") {
 
-
-
       html =
-
-
 
         "<div class='invalido'>" +
 
-
-
         "<h1>❌ QR NO VÁLIDO</h1>" +
-
-
 
         "</div>";
 
-
-
     }
-
-
 
 else if (resultado.estado === "NO_VENDIDO") {
 
-
-
   html =
 
-
-
     "<div class='invalido'>" +
-
-
 
     "<h1>🚫 QR NO VENDIDO</h1>" +
 
@@ -973,8 +674,6 @@ String(resultado.id).padStart(3, "0") +
 
     "</div>" +
 
-
-
     "<div class='dato'>" +
 
     "<strong>Tipo:</strong> " +
@@ -983,97 +682,47 @@ String(resultado.id).padStart(3, "0") +
 
     "</div>" +
 
-
-
     "<p>Este código todavía no ha sido vendido.</p>" +
-
-
 
     "</div>";
 
-
-
 }
-
-
 
     else {
 
-
-
       html =
-
-
 
         "<div class='invalido'>" +
 
-
-
         "<h1>❌ QR NO DISPONIBLE</h1>" +
-
-
 
         "</div>";
 
-
-
     }
-
-
-
-
 
     document.getElementById("resultado").innerHTML =
 
       html;
 
-
-
-
-
     document.getElementById("codigoManual").value = "";
-
-
-
-
 
     procesando = false;
 
-
-
-
-
     // Botón para continuar
-
-
 
     const boton = document.createElement("button");
 
-
-
     boton.className = "boton-camara";
-
-
 
     boton.innerHTML = "📷 ESCANEAR SIGUIENTE";
 
-
-
     boton.onclick = function() {
-
-
 
       document.getElementById("resultado").innerHTML = "";
 
-
-
       iniciarScanner();
 
-
-
     };
-
-
 
     document
 
@@ -1081,13 +730,7 @@ String(resultado.id).padStart(3, "0") +
 
       .appendChild(boton);
 
-
-
   }
-
-
-
-
 
   // ==========================================
 
@@ -1095,68 +738,34 @@ String(resultado.id).padStart(3, "0") +
 
   // ==========================================
 
-
-
   function detenerScanner() {
-
-
 
     if (scanner && escaneando) {
 
-
-
       scanner.stop()
-
-
 
         .then(function() {
 
-
-
           scanner.clear();
 
-
-
           escaneando = false;
-
-
 
         })
 
-
-
         .catch(function(error) {
-
-
 
           console.log(error);
 
-
-
           escaneando = false;
-
-
 
         });
 
-
-
     }
-
-
 
   }
 
-
-
-
-
 </script>
 
-
-
 </body>
-
-
 
 </html>
