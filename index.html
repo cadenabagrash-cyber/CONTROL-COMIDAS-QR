@@ -160,7 +160,20 @@
   .logo { width: 150px; margin-bottom: 12px; }
   .seccion { padding: 18px 14px; margin: 14px auto; }
   .firma { left: 8px; bottom: 6px; }
-  #reader { max-width: 100%; }       
+  #reader {
+  width: 100%;
+  max-width: 360px;
+  margin: 16px auto 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+#reader video {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
 }
   </style>
 
