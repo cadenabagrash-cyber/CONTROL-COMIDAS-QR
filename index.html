@@ -37,20 +37,20 @@
     }
 
     /* Mensaje superior flotante: no desplaza logo, secciones ni escáner. */
-    .mensaje-evento {
-      display: none;
-      position: fixed;
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(1100px, calc(100% - 32px));
-      margin: 0;
-      padding: 0 12px;
-      text-align: center;
-      color: #0b3478;
-      z-index: 30;
-      pointer-events: none;
-    }
+.mensaje-evento {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 1100px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  z-index: 1000;
+  pointer-events: none;
+}
 
     .mensaje-evento .titulo-evento {
       margin: 0 0 8px;
@@ -73,13 +73,13 @@
     }
 
     body.modo-evento {
-      background-image: none !important;
-      background-color: #fff;
-    }
+  background-image: none !important;
+  background-color: #fff;
+}
 
-    body.modo-evento .mensaje-evento {
-      display: block;
-    }
+body.modo-evento .mensaje-evento {
+  display: block;
+}
 
     .contenedor {
       width: 100%;
@@ -219,10 +219,14 @@
 
 <div class="contenedor">
 
-  <div class="mensaje-evento" id="mensajeEvento" aria-live="polite">
-    <p class="titulo-evento">¡Éxito en tu evento!</p>
-    <p class="texto-evento">Equipo <span class="bagrash">BAGRASH</span>, gracias por ser<br class="salto-escritorio"> parte de este gran día.</p>
-  </div>
+<div class="mensaje-evento" id="mensajeEvento" aria-live="polite">
+  <p class="titulo-evento">¡Éxito en tu evento!</p>
+  <p class="texto-evento">
+    Equipo <span class="bagrash">BAGRASH</span>, gracias por ser
+    <br class="salto-escritorio">
+    parte de este gran día.
+  </p>
+</div>
 
   <img
 
