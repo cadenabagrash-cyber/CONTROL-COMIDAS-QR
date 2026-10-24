@@ -36,6 +36,11 @@
       position: relative;
     }
 
+    /* Solo cambia la imagen de fondo; no altera posiciones ni lógica del escáner. */
+    body.modo-evento {
+      background-image: url("Fondo-BAGRASH-Evento.png");
+    }
+
     .contenedor {
       width: 100%;
       max-width: 600px;
@@ -284,6 +289,8 @@
 
     }
 
+    document.body.classList.add("modo-evento");
+
     document.getElementById("resultado").innerHTML =
 
       "<h3>📷 Activando cámara...</h3>";
@@ -329,6 +336,8 @@
     })
 
     .catch(function(error) {
+
+      document.body.classList.remove("modo-evento");
 
       document.getElementById("resultado").innerHTML =
 
@@ -549,6 +558,8 @@
   // ==========================================
 
   function mostrarResultado(resultado) {
+
+    document.body.classList.add("modo-evento");
 
     let html = "";
 
