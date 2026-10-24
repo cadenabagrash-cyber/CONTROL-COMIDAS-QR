@@ -39,10 +39,10 @@
     /* Mensaje superior flotante: no desplaza logo, secciones ni escáner. */
 .mensaje-evento {
   display: none;
-  position: absolute;
-top: 12px;
-left: 50%;
-transform: translateX(-50%);
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
   width: calc(100% - 32px);
   max-width: 1100px;
   margin: 0;
@@ -75,7 +75,6 @@ transform: translateX(-50%);
     body.modo-evento {
   background-image: none !important;
   background-color: #fff;
-  position: relative;
 }
 
 body.modo-evento .mensaje-evento {
