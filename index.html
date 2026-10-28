@@ -36,56 +36,6 @@
       position: relative;
     }
 
-    /* Mensaje del evento: arriba de la página y desplazable con el contenido. */
-    .mensaje-evento {
-      display: none;
-      position: absolute;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 32px);
-      max-width: 1100px;
-      margin: 0;
-      padding: 12px 16px;
-      text-align: center;
-      border: 2px solid #0b3478;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, .96);
-      box-shadow: 0 3px 12px rgba(0, 0, 0, .12);
-      z-index: 1000;
-      pointer-events: none;
-    }
-
-    .mensaje-evento .titulo-evento {
-      margin: 0 0 8px;
-      font-size: clamp(1.65rem, 3.8vw, 2.8rem);
-      line-height: 1.08;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-    }
-
-    .mensaje-evento .signo-evento,
-    .mensaje-evento .bagrash {
-      color: #e21b2d;
-      font-weight: 800;
-    }
-
-    .mensaje-evento .texto-evento {
-      margin: 0;
-      font-size: clamp(1rem, 2vw, 1.45rem);
-      line-height: 1.25;
-      font-weight: 600;
-    }
-
-    body.modo-evento {
-      background-image: none !important;
-      background-color: #fff;
-    }
-
-    body.modo-evento .mensaje-evento {
-      display: block;
-    }
-
     .contenedor {
       width: 100%;
       max-width: 600px;
@@ -207,10 +157,6 @@
       }
 
   .contenedor { max-width: 100%; }
-  .mensaje-evento { top: 12px; width: calc(100% - 16px); padding: 10px 10px; }
-  .mensaje-evento .titulo-evento { font-size: clamp(1.35rem, 6vw, 2rem); }
-  .mensaje-evento .texto-evento { font-size: clamp(.88rem, 3.7vw, 1.1rem); }
-  .salto-escritorio { display: none; }
   .logo { width: 150px; margin-bottom: 12px; }
   .seccion { padding: 18px 14px; margin: 14px auto; }
   .firma { left: 8px; bottom: 6px; }
@@ -221,15 +167,6 @@
 </head>
 
 <body>
-
-<div class="mensaje-evento" id="mensajeEvento" aria-live="polite">
-  <p class="titulo-evento"><span style="color:#000">¡</span>Éxito en tu evento<span style="color:#000">!</span></p>
-  <p class="texto-evento">
-    Equipo <span class="bagrash">BAGRASH</span>, gracias por ser
-    <br class="salto-escritorio">
-    parte de este gran día.
-  </p>
-</div>
 
 <div class="contenedor">
 
@@ -347,8 +284,6 @@
 
     }
 
-    document.body.classList.add("modo-evento");
-
     document.getElementById("resultado").innerHTML =
 
       "<h3>📷 Activando cámara...</h3>";
@@ -394,8 +329,6 @@
     })
 
     .catch(function(error) {
-
-      document.body.classList.remove("modo-evento");
 
       document.getElementById("resultado").innerHTML =
 
@@ -616,8 +549,6 @@
   // ==========================================
 
   function mostrarResultado(resultado) {
-
-    document.body.classList.add("modo-evento");
 
     let html = "";
 
